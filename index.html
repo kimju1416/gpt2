@@ -26,7 +26,7 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif;bac
 .tab-content{display:none}.tab-content.active{display:block}
 #tab-builder{height:calc(100vh - 101px)}
 .builder-layout{display:flex;height:100%;overflow:hidden}
-.builder-left{flex:0 0 50%;min-width:300px;max-width:560px;background:var(--surface2);border-right:1px solid var(--border);overflow-y:auto;padding:16px;}
+.builder-left{flex:0 0 50%;min-width:300px;max-width:560px;background:var(--surface2);border-right:1px solid var(--border);overflow-y:auto;padding:16px 16px 32px;}
 .formula-bar{background:var(--surface);border:1.5px solid var(--border2);border-radius:var(--r-lg);padding:16px;margin-bottom:14px;box-shadow:var(--shadow);}
 .formula-bar-title{font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
 .formula-bar-title::before{content:'';display:inline-block;width:3px;height:12px;border-radius:99px;background:linear-gradient(180deg,#8b5cf6,#ec4899);flex-shrink:0;}
@@ -50,7 +50,7 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif;bac
 /* 스타일 섹션 서브카테고리 */
 .style-subcat{font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.6px;margin:10px 0 5px;display:flex;align-items:center;gap:5px;}
 .style-subcat::before{content:'';width:3px;height:10px;border-radius:99px;background:linear-gradient(180deg,var(--accent-mid),var(--pink));flex-shrink:0;}
-.generate-btn{width:100%;padding:13px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;border:none;border-radius:99px;font-size:14px;font-weight:700;cursor:pointer;margin:12px 0 4px;transition:all .2s;font-family:inherit;min-height:46px;box-shadow:0 4px 18px rgba(139,92,246,.28);letter-spacing:.2px;}
+.generate-btn{width:100%;padding:13px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;border:none;border-radius:99px;font-size:14px;font-weight:700;cursor:pointer;margin:12px 0 0;transition:all .2s;font-family:inherit;min-height:46px;box-shadow:0 4px 18px rgba(139,92,246,.28);letter-spacing:.2px;}
 .generate-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(139,92,246,.38)}.generate-btn:active{transform:translateY(0)}
 .builder-right{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
 .builder-right-inner{flex:1;overflow-y:auto;padding:20px 22px}
@@ -232,7 +232,7 @@ td strong{color:var(--accent);font-weight:700}tr:last-child td{border-bottom:non
         </div></div>
       </div>
 
-      <!-- 🎨 스타일 (NEW) -->
+      <!-- 🎨 스타일 -->
       <div class="card">
         <h3>🎨 스타일 (Style)</h3>
         <div class="form-group">
@@ -447,28 +447,45 @@ td strong{color:var(--accent);font-weight:700}tr:last-child td{border-bottom:non
 var CATS=JSON.parse(document.getElementById('cats-data').textContent);
 var CMDS=['학생 얼굴 없이 뒷모습·실루엣으로만 바꿔줘','텍스트 생성 절대 금지, 여백만 확보해줘','배경을 학교 운동장으로 바꿔줘','배경을 교실 내부로 바꿔줘','배경을 체육관으로 바꿔줘','분위기를 더 밝고 활기차게 바꿔줘','분위기를 차분하고 정중하게 바꿔줘','카피 여백을 상단 30%로 넓혀줘','소품을 2개 이하로 줄여줘','비율을 16:9로 바꿔줘','비율을 1:1로 바꿔줘','봄 벚꽃 계절감으로 바꿔줘','가을 단풍 계절감으로 바꿔줘','일러스트 스타일로 바꿔줘','지브리 스타일로 바꿔줘','수채화 스타일로 바꿔줘','포스터 구도로 더 임팩트 있게 바꿔줘','학부모 대상 느낌으로 더 신뢰감 있게 바꿔줘','조명을 더 밝고 따뜻하게 바꿔줘','교복은 일반 남색으로, 로고 없이 해줘','손·소품 클로즈업 구도로만 바꿔줘','학교 건물 실루엣을 배경에 추가해줘'];
 var chipSelections={};var libSelectedNum=null;
-function showTab(tab,el){document.querySelectorAll('.tab-content').forEach(function(t){t.classList.remove('active')});document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});document.getElementById('tab-'+tab).classList.add('active');if(el)el.classList.add('active')}
+
+function showTab(tab,el){
+  document.querySelectorAll('.tab-content').forEach(function(t){t.classList.remove('active')});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+  document.getElementById('tab-'+tab).classList.add('active');
+  if(el)el.classList.add('active');
+}
+
 function toggleChip(el,group){
   var singleGroups=['school','ratio','usage','mood','copy'];
-  if(singleGroups.indexOf(group)!==-1){document.querySelectorAll('.chip').forEach(function(c){if(c.getAttribute('onclick')&&c.getAttribute('onclick').includes("'"+group+"'"))c.classList.remove('selected')});chipSelections[group]=[];}
+  if(singleGroups.indexOf(group)!==-1){
+    document.querySelectorAll('.chip').forEach(function(c){
+      if(c.getAttribute('onclick')&&c.getAttribute('onclick').includes("'"+group+"'"))c.classList.remove('selected')
+    });
+    chipSelections[group]=[];
+  }
   if(!chipSelections[group])chipSelections[group]=[];
   var txt=el.textContent;
-  if(el.classList.contains('selected')&&singleGroups.indexOf(group)===-1){el.classList.remove('selected');chipSelections[group]=chipSelections[group].filter(function(v){return v!==txt});}
-  else{el.classList.add('selected');if(chipSelections[group].indexOf(txt)===-1)chipSelections[group].push(txt);}
+  if(el.classList.contains('selected')&&singleGroups.indexOf(group)===-1){
+    el.classList.remove('selected');
+    chipSelections[group]=chipSelections[group].filter(function(v){return v!==txt});
+  } else {
+    el.classList.add('selected');
+    if(chipSelections[group].indexOf(txt)===-1)chipSelections[group].push(txt);
+  }
 }
+
 function generatePrompt(){
   var event=document.getElementById('event').value.trim();
   var school=(chipSelections['school']||[]).join(', ');
   var target=(chipSelections['target']||[]).join(', ');
   var usage=(chipSelections['usage']||[]).join(', ');
-  var ratio=(chipSelections['ratio']||['4:5'])[0]||'4:5';
+  var ratio=(chipSelections['ratio']||[])[0]||'';  // ✅ 수정: 기본값 제거
   var mood=(chipSelections['mood']||[]).join(', ');
   var style=(chipSelections['style']||[]).join(', ');
   var scene=document.getElementById('scene').value.trim();
   var elements=document.getElementById('elements').value.trim();
   var copyPos=(chipSelections['copy']||[]).join(', ');
   var forbidden=document.getElementById('forbidden').value.trim();
-  var ratioNum=ratio.replace(/[^0-9:A-Za-z가-힣]/g,'').replace('세로','').trim()||'4:5';
   var prompt='';
   if(usage)prompt+=usage+'용 이미지. ';
   if(school)prompt+=school+' ';
@@ -479,17 +496,55 @@ function generatePrompt(){
   if(copyPos)prompt+=copyPos+'에 카피 여백 확보. ';
   if(mood)prompt+='분위기: '+mood+'. ';
   if(style)prompt+='스타일: '+style+'. ';
-  prompt+='AR '+ratio.replace(/[^0-9:]/g,'')+'. ';
+  if(ratio)prompt+='AR '+ratio.replace(/[^0-9:]/g,'')+'. ';  // ✅ 수정: 선택 시에만 추가
   if(forbidden)prompt+='금지사항: '+forbidden+'. ';
-  var el=document.getElementById('promptContent');if(el)el.textContent=prompt;
+  // ✅ 수정: 기존 내용이 있으면 뒤에 추가, 없으면 새로 작성
+  var el=document.getElementById('promptContent');
+  if(el){
+    var existing=el.textContent.trim();
+    var placeholder='왼쪽 폼을 채우고 생성 버튼을 누르세요.';
+    if(existing&&existing!==placeholder){
+      el.textContent=existing+' '+prompt;
+    } else {
+      el.textContent=prompt;
+    }
+  }
 }
-function applyCmd(cmd){var contentEl=document.getElementById('promptContent');if(!contentEl)return;var current=contentEl.innerText.trim();var placeholder='왼쪽 폼을 채우고 생성 버튼을 누르세요.';if(!current||current===placeholder)return;var base=current.replace(/\s*\[수정\].*$/,'').trim();contentEl.textContent=base+' [수정] '+cmd;}
-function copyResult(){var el=document.getElementById('promptContent');var txt=el?el.innerText.trim():'';if(txt)navigator.clipboard.writeText(txt).then(showCopied)}
-function showCopied(){var msg=document.getElementById('copiedMsg');msg.style.display='block';setTimeout(function(){msg.style.display='none'},2000)}
-function toggleCat(catId){var el=document.getElementById('citems-'+catId);var tog=document.getElementById('ctog-'+catId);if(!el)return;var collapsed=el.classList.toggle('collapsed');if(tog)tog.textContent=collapsed?'▼':'▲'}
+
+function applyCmd(cmd){
+  var contentEl=document.getElementById('promptContent');
+  if(!contentEl)return;
+  var current=contentEl.innerText.trim();
+  var placeholder='왼쪽 폼을 채우고 생성 버튼을 누르세요.';
+  if(!current||current===placeholder)return;
+  var base=current.replace(/\s*\[수정\].*$/,'').trim();
+  contentEl.textContent=base+' [수정] '+cmd;
+}
+
+function copyResult(){
+  var el=document.getElementById('promptContent');
+  var txt=el?el.innerText.trim():'';
+  if(txt)navigator.clipboard.writeText(txt).then(showCopied);
+}
+
+function showCopied(){
+  var msg=document.getElementById('copiedMsg');
+  msg.style.display='block';
+  setTimeout(function(){msg.style.display='none'},2000);
+}
+
+function toggleCat(catId){
+  var el=document.getElementById('citems-'+catId);
+  var tog=document.getElementById('ctog-'+catId);
+  if(!el)return;
+  var collapsed=el.classList.toggle('collapsed');
+  if(tog)tog.textContent=collapsed?'▼':'▲';
+}
+
 function selectPrompt(catId,num){
   if(libSelectedNum){var prev=document.getElementById('pi-'+libSelectedNum);if(prev)prev.classList.remove('active')}
-  libSelectedNum=num;var curr=document.getElementById('pi-'+num);if(curr)curr.classList.add('active');
+  libSelectedNum=num;
+  var curr=document.getElementById('pi-'+num);if(curr)curr.classList.add('active');
   var cat=CATS.find(function(c){return c.id===catId});if(!cat)return;
   var item=cat.items.find(function(i){return i.num===num});if(!item)return;
   var emptyEl=document.getElementById('libEmpty');var detailEl=document.getElementById('libDetail');
@@ -498,8 +553,13 @@ function selectPrompt(catId,num){
     detailEl.style.display='flex';detailEl.style.padding='0';detailEl.style.flexDirection='row';detailEl.style.height='100%';detailEl.innerHTML='';
     var imgPanel=document.createElement('div');imgPanel.className='lib-detail-img-panel';
     var imgUrl=getImg(catId,num);
-    if(imgUrl){var img=document.createElement('img');img.src=imgUrl;img.alt=item.title;img.onerror=function(){imgPanel.innerHTML='<div class="lib-detail-img-placeholder">🖼️<br>이미지를<br>불러올 수 없어요</div>';};imgPanel.appendChild(img);}
-    else{imgPanel.innerHTML='<div class="lib-detail-img-placeholder">🖼️<br>이미지 없음</div>';}
+    if(imgUrl){
+      var img=document.createElement('img');img.src=imgUrl;img.alt=item.title;
+      img.onerror=function(){imgPanel.innerHTML='<div class="lib-detail-img-placeholder">🖼️<br>이미지를<br>불러올 수 없어요</div>';};
+      imgPanel.appendChild(img);
+    } else {
+      imgPanel.innerHTML='<div class="lib-detail-img-placeholder">🖼️<br>이미지 없음</div>';
+    }
     var infoPanel=document.createElement('div');infoPanel.className='lib-detail-info-panel';
     infoPanel.innerHTML='<div class="lib-detail-header" style="margin-bottom:0;padding-bottom:12px;border-bottom:1px solid var(--border)"><div class="lib-detail-badge">'+cat.id+' '+cat.name+'</div><div class="lib-detail-title">'+item.num+'. '+item.title+'</div></div>'
       +'<div class="lib-section" style="margin-bottom:0"><div class="lib-good"><div class="lib-section-label">✅ 복사용 프롬프트</div><span id="promptText">'+item.good+'</span></div></div>'
@@ -509,23 +569,82 @@ function selectPrompt(catId,num){
     detailEl.appendChild(imgPanel);detailEl.appendChild(infoPanel);
   }
 }
-function libCopyPrompt(){var el=document.getElementById('promptText');if(el)navigator.clipboard.writeText(el.textContent).then(showCopied)}
-function libSearch2(){var q=document.getElementById('libSearch2').value.toLowerCase().trim();document.querySelectorAll('.lib-prompt-item').forEach(function(el){el.style.display=(!q||el.textContent.toLowerCase().includes(q))?'':'none'});document.querySelectorAll('.lib-cat-group').forEach(function(grp){var v=Array.from(grp.querySelectorAll('.lib-prompt-item')).filter(function(e){return e.style.display!=='none'}).length;grp.style.display=v>0?'':'none'})}
-function getImg(catId,num){var key='img_'+catId+'_'+num;if(window._IMGS&&window._IMGS[key])return window._IMGS[key];try{return localStorage.getItem(key)||'';}catch(e){return '';}}
+
+function libCopyPrompt(){
+  var el=document.getElementById('promptText');
+  if(el)navigator.clipboard.writeText(el.textContent).then(showCopied);
+}
+
+function libSearch2(){
+  var q=document.getElementById('libSearch2').value.toLowerCase().trim();
+  document.querySelectorAll('.lib-prompt-item').forEach(function(el){
+    el.style.display=(!q||el.textContent.toLowerCase().includes(q))?'':'none';
+  });
+  document.querySelectorAll('.lib-cat-group').forEach(function(grp){
+    var v=Array.from(grp.querySelectorAll('.lib-prompt-item')).filter(function(e){return e.style.display!=='none'}).length;
+    grp.style.display=v>0?'':'none';
+  });
+}
+
+function getImg(catId,num){
+  var key='img_'+catId+'_'+num;
+  if(window._IMGS&&window._IMGS[key])return window._IMGS[key];
+  try{return localStorage.getItem(key)||'';}catch(e){return '';}
+}
+
 function buildLibrarySidebar(){
   var catList=document.getElementById('libCatList');if(!catList)return;catList.innerHTML='';
   CATS.forEach(function(cat){
     var grp=document.createElement('div');grp.className='lib-cat-group';
-    var hdr=document.createElement('div');hdr.className='lib-cat-header';hdr.onclick=(function(id){return function(){toggleCat(id)}})(cat.id);
+    var hdr=document.createElement('div');hdr.className='lib-cat-header';
+    hdr.onclick=(function(id){return function(){toggleCat(id)}})(cat.id);
     hdr.innerHTML='<span>'+cat.id+' '+cat.name+'</span><span class="cat-toggle" id="ctog-'+cat.id+'">▲</span>';
     var items=document.createElement('div');items.className='lib-cat-items';items.id='citems-'+cat.id;
-    cat.items.forEach(function(item){var d=document.createElement('div');d.className='lib-prompt-item';d.id='pi-'+item.num;var cid=cat.id,inum=item.num;d.onclick=function(){selectPrompt(cid,inum);};d.innerHTML='<span class="item-num">'+item.num+'</span><span>'+item.title+'</span>';items.appendChild(d);});
+    cat.items.forEach(function(item){
+      var d=document.createElement('div');d.className='lib-prompt-item';d.id='pi-'+item.num;
+      var cid=cat.id,inum=item.num;
+      d.onclick=function(){selectPrompt(cid,inum);};
+      d.innerHTML='<span class="item-num">'+item.num+'</span><span>'+item.title+'</span>';
+      items.appendChild(d);
+    });
     grp.appendChild(hdr);grp.appendChild(items);catList.appendChild(grp);
   });
 }
-function resetPrompt(){var contentEl=document.getElementById('promptContent');if(contentEl){contentEl.textContent='';}document.querySelectorAll('.chip.selected').forEach(function(c){c.classList.remove('selected')});chipSelections={};document.getElementById('event').value='';document.getElementById('scene').value='';document.getElementById('elements').value='';document.getElementById('forbidden').value='';}
-function sendToBuilder(){var el=document.getElementById('promptText');if(!el)return;var txt=el.textContent.trim();if(!txt)return;showTab('builder',document.querySelector('.tab-btn'));setTimeout(function(){var contentEl=document.getElementById('promptContent');if(contentEl){contentEl.textContent=txt;}},50);}
-function initCmdChips(){var c=document.getElementById('cmd-chips');if(c&&c.children.length===0){CMDS.forEach(function(cmd){var btn=document.createElement('button');btn.className='cmd-chip';btn.textContent=cmd;btn.addEventListener('click',function(){applyCmd(cmd)});c.appendChild(btn)})}}
+
+function resetPrompt(){
+  var contentEl=document.getElementById('promptContent');
+  if(contentEl){contentEl.textContent='';}
+  document.querySelectorAll('.chip.selected').forEach(function(c){c.classList.remove('selected')});
+  chipSelections={};
+  document.getElementById('event').value='';
+  document.getElementById('scene').value='';
+  document.getElementById('elements').value='';
+  document.getElementById('forbidden').value='';
+}
+
+function sendToBuilder(){
+  var el=document.getElementById('promptText');
+  if(!el)return;
+  var txt=el.textContent.trim();
+  if(!txt)return;
+  showTab('builder',document.querySelector('.tab-btn'));
+  setTimeout(function(){
+    var contentEl=document.getElementById('promptContent');
+    if(contentEl){contentEl.textContent=txt;}
+  },50);
+}
+
+function initCmdChips(){
+  var c=document.getElementById('cmd-chips');
+  if(c&&c.children.length===0){
+    CMDS.forEach(function(cmd){
+      var btn=document.createElement('button');btn.className='cmd-chip';btn.textContent=cmd;
+      btn.addEventListener('click',function(){applyCmd(cmd)});
+      c.appendChild(btn);
+    });
+  }
+}
+
 window.onload=function(){initCmdChips();buildLibrarySidebar();};
 </script>
 </body>
