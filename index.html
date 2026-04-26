@@ -83,7 +83,7 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif;bac
 .lib-right{flex:1;display:flex;flex-direction:column;overflow-y:auto;background:var(--bg)}
 .lib-right-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#c4b5fd;font-size:14px;gap:10px}
 .lib-right-empty .empty-icon{font-size:36px;opacity:.4}
-.lib-detail{flex:1;overflow:hidden;display:none;min-height:0}
+.lib-detail{flex:1;overflow:hidden;display:none;min-height:0;flex-direction:row;height:100%;}
 .lib-detail-header{margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
 .lib-detail-badge{display:inline-block;background:var(--accent-dim);color:var(--accent);font-size:10px;font-weight:700;padding:3px 11px;border-radius:99px;margin-bottom:8px;}
 .lib-detail-title{font-size:20px;font-weight:800;color:var(--text);line-height:1.35;letter-spacing:-.3px}
@@ -133,7 +133,7 @@ td strong{color:var(--accent);font-weight:700}tr:last-child td{border-bottom:non
   .form-group input,.form-group textarea,.lib-left-search input{font-size:16px}
   .chip{min-height:36px}.cmd-chip{min-height:38px}.lib-prompt-item{min-height:44px}
   table{display:block;overflow-x:auto}.lib-detail{padding:16px}
-  .lib-detail-layout{flex-direction:column;height:auto}.lib-detail-img-panel{flex:none;width:100%;max-width:100%;height:240px;border-right:none;border-bottom:1px solid var(--border)}.lib-detail-info-panel{flex:none;padding:14px 16px}
+  .lib-detail-layout{flex-direction:column;height:auto}.lib-detail{flex-direction:column;height:auto;}.lib-detail-img-panel{flex:none;width:100%;max-width:100%;height:240px;border-right:none;border-bottom:1px solid var(--border)}.lib-detail-info-panel{flex:none;padding:14px 16px}
 }
 @media(max-width:480px){.app-header{padding:8px 12px}.app-header h1{font-size:18px}.formula-bar-grid{grid-template-columns:repeat(3,1fr)}.tab-btn{padding:10px 3px}.builder-right-inner,.lib-detail{padding:12px}.guide-section{padding:13px}}
 </style>
@@ -550,7 +550,7 @@ function selectPrompt(catId,num){
   var emptyEl=document.getElementById('libEmpty');var detailEl=document.getElementById('libDetail');
   if(emptyEl)emptyEl.style.display='none';
   if(detailEl){
-    detailEl.style.display='flex';detailEl.style.padding='0';detailEl.style.flexDirection='row';detailEl.style.height='100%';detailEl.innerHTML='';
+    detailEl.style.display='flex';detailEl.style.padding='0';detailEl.innerHTML='';
     var imgPanel=document.createElement('div');imgPanel.className='lib-detail-img-panel';
     var imgUrl=getImg(catId,num);
     if(imgUrl){
